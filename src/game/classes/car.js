@@ -22,8 +22,8 @@ export class Car extends Phaser.Physics.Arcade.Sprite {
     activate(num, skin) {
         console.log(`%cACTIVANDO id ${this._carId}`, "color: orange")
         this.setTexture(skin);
-        this.body.setSize(this.width, this.height);
-        this.body.setOffset(0, 0);
+        this.body.setSize(this.width * 0.8, this.height * 0.8);
+        this.body.setOffset(this.width * 0.1, this.height * 0.2);
         this.setActive(true);
         this.setVisible(true);
         this.body.enable = true;

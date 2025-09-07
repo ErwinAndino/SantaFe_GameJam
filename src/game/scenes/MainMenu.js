@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import { Player } from '../classes/player';
 import { Bridge } from '../classes/bridge';
 import { CarSpawner } from '../classes/carSpawner';
+import { TrashSpawner } from '../classes/trashSpawner.js';
 
 export class MainMenu extends Scene {
     constructor() {
@@ -26,6 +27,7 @@ export class MainMenu extends Scene {
         this.bridge = new Bridge(this, 960, 480, "logo")
         this.player = new Player(this, 960, 340, "blanco");
         this.carSpawner = new CarSpawner(this, this.bridge, this.player);
+        this.trashSpawner = new TrashSpawner(this, this.player);
 
 
         this.add.text(512, 460, 'Santa Fe', {
@@ -35,13 +37,14 @@ export class MainMenu extends Scene {
         }).setOrigin(0.5);
         this.add.image(960, 540, 'puenteAdelante').setDepth(50);
 
-        this.bridge.setScale(4, 1);
+        this.bridge.setScale(8, 1);
         this.physics.add.collider(this.bridge, this.player);
     }
 
     update(t, dt) {
         this.player.update(dt);
-        this.carSpawner.update(dt)
+        this.carSpawner.update(dt);
+        this.trashSpawner.update(dt);
 
     }
 }
