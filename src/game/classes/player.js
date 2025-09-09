@@ -1,20 +1,34 @@
+import { Fish } from '../classes/fish';
 export class Player extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, key) {
+    constructor(scene, x, y, key, trashSpawner, scoreText) {
         super(scene, x, y, key)
         this.cursors = scene.input.keyboard.createCursorKeys();
-
+        this.trashSpawner = trashSpawner;
         this.flying = false;
+        this.isFishing = false;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
         this.body.setCollideWorldBounds(true);
 
+        this.scene = scene;
+
+        this.fish = new Fish(this.scene, 960, 480, "negro", this, this.trashSpawner);
+        this.fish.setVisible(false);
+
+        scene.physics.add.overlap(this.fish, this.trashSpawner.trashList, (fish, trash) => {
+            fish.reelIn(trash);
+        });
+
+        this.scoreText = scoreText
     }
 
     update(dt) {
         this.walking();
         this.jumping();
+        this.fishing();
+        this.fish.update()
     }
 
     walking() {
@@ -54,6 +68,25 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             this.body.setVelocityX(500)
         }
         this.body.setVelocityY(-500)
+    }
+
+    fishing() {
+        if (this.cursors.space.isDown && !this.isFishing) {
+            this.isFishing = true;
+            console.log("ESPACIO")
+            this.fish.activate(this.body.x, this.body.y);
+        }
+    }
+
+    resetFishing() {
+        this.isFishing = false;
+    }
+
+    scorePoint() {
+        this.scoreText.setVisible(true);
+        this.scene.time.delayedCall(2000, () => {
+            this.scoreText.setVisible(false);
+        });
     }
 
 }

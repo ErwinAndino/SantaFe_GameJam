@@ -24,27 +24,40 @@ export class MainMenu extends Scene {
         g.generateTexture("negro", 36, 36);
         g.destroy(); // opcional, liberar memoria
 
+        this.scoreText = this.add.text(960, 540, 'Trash Collected!', {
+            fontFamily: 'Arial Black', fontSize: 38, color: '#df14e6ff',
+            stroke: '#000000', strokeThickness: 8,
+            align: 'center'
+        }).setOrigin(0.5).setDepth(70);
+
+        this.scoreText.setVisible(false);
+
         this.bridge = new Bridge(this, 960, 480, "logo")
-        this.player = new Player(this, 960, 340, "blanco");
+        this.trashSpawner = new TrashSpawner(this);
+        this.player = new Player(this, 960, 340, "blanco", this.trashSpawner, this.scoreText);
         this.carSpawner = new CarSpawner(this, this.bridge, this.player);
-        this.trashSpawner = new TrashSpawner(this, this.player);
+
 
 
         this.add.text(512, 460, 'Santa Fe', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setDepth(70);
+
+
         this.add.image(960, 540, 'puenteAdelante').setDepth(50);
 
         this.bridge.setScale(8, 1);
         this.physics.add.collider(this.bridge, this.player);
+
+
+
     }
 
     update(t, dt) {
         this.player.update(dt);
         this.carSpawner.update(dt);
         this.trashSpawner.update(dt);
-
     }
 }

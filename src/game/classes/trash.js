@@ -31,8 +31,8 @@ export class Trash extends Phaser.Physics.Arcade.Sprite {
     }
 
     place(randomVelocity) {
-        this.setPosition(this.initialX, 300)
-        this.body.setVelocityY(randomVelocity)
+        this.setPosition(this.initialX, 500);
+        this.body.setVelocityY(randomVelocity);
     }
 
     deactivate() {

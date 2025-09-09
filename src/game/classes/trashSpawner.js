@@ -1,8 +1,7 @@
 import { Trash } from '../classes/trash';
 export class TrashSpawner {
-    constructor(scene, player) {
+    constructor(scene) {
         this.scene = scene;
-        this.player = player;
         this.timer = 5000;
         this.trashList = scene.physics.add.group({
             classType: Trash,
@@ -20,13 +19,12 @@ export class TrashSpawner {
         // if (randomSkin === 3) skin = "auto3"
         const trash = this.trashList.get(randomX, 360, skin);
         if (!trash) {
-            console.log("trash no existe negro no se que hiciste mal")
+            console.log("trash no existe  no se que hiciste mal")
         }
         if (trash) {
             console.log("intentando activar trash!");
             trash.activate(randomX, skin);
             trash.place(randomVelocity);
-            // this.scene.physics.add.overlap(this.player, trash, () => { this.player.hit() });
         }
     }
 
