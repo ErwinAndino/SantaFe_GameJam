@@ -11,12 +11,12 @@ export class TrashSpawner {
     }
     spawn() {
         const randomVelocity = Phaser.Math.Between(100, 300)
-        const randomX = Phaser.Math.Between(300, 1600)
+        const randomX = Phaser.Math.Between(500, 1700)
         const randomSkin = Phaser.Math.Between(1, 3);
-        let skin = "beer"
-        // if (randomSkin === 1) skin = "auto1"
-        // if (randomSkin === 2) skin = "auto2"
-        // if (randomSkin === 3) skin = "auto3"
+        let skin = ""
+        if (randomSkin === 1) skin = "beer"
+        if (randomSkin === 2) skin = "trash"
+        if (randomSkin === 3) skin = "can"
         const trash = this.trashList.get(randomX, 360, skin);
         if (!trash) {
             console.log("trash no existe  no se que hiciste mal")
