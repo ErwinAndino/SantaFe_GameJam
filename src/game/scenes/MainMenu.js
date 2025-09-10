@@ -15,9 +15,9 @@ export class MainMenu extends Scene {
 
     create() {
         this.add.image(960, 540, 'background');
-        this.add.image(960, 540, 'puenteAtras');
+        this.add.image(960, 540, 'puenteAtras').setAlpha(0.8);
         this.add.image(1500, 250, "beer").setDepth(0.3).setAlpha(0.5);
-        this.add.image(1200, 231, "sol").setScale(0.3).setAlpha(0.5);
+        // this.add.image(1200, 231, "sol").setScale(0.3).setAlpha(0.5);
 
         this.corazon1 = this.add.image(50, 40, "corazon").setScale(2).setDepth(100)
         this.corazon2 = this.add.image(110, 40, "corazon").setScale(2).setDepth(100)
