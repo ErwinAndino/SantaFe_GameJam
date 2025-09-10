@@ -17,7 +17,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.body.setCollideWorldBounds(true);
 
-
         //fishing hook and line
         this.fish = new Fish(this.scene, 960, 0, "hook", this);
         this.fish.setVisible(false);
@@ -29,6 +28,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             fish.reelIn(trash);
         });
 
+        this.hitSound = this.scene.sound.add("hit", { volume: 0.5 });
+        this.deathSound = this.scene.sound.add("death", { volume: 0.5 });
+        this.fishSound = this.scene.sound.add("fish", { volume: 0.2 });
         //fishbar
         this.fishBar = fishBar;
         this.fishBarInner = fishBarInner;
@@ -42,7 +44,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.fish.update()
         this.lastTimeHitted = this.lastTimeHitted + dt;
         if (this.lastTimeHitted > this.hitCooldown) {
-            this.clearTint();
+            this.setAlpha(1)
         }
         this.fishBarInner.update();
     }
@@ -55,7 +57,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             return
         }
         const cursors = this.cursors;
-        const speed = 200
+        const speed = 250
 
         let vx = 0;
 
@@ -79,7 +81,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.setVelocityX(vx);
     }
     jumping() {
-        if ((this.cursors.up.isDown) && (this.body.blocked.down)) this.body.setVelocityY(-350);
+        if ((this.cursors.up.isDown) && (this.body.blocked.down)) this.body.setVelocityY(-550);
+        this.body.setVelocityY(this.body.velocity.y += 2)
         if ((this.cursors.down.isDown) && (!this.body.blocked.down)) this.body.setVelocityY(this.body.velocity.y += 10);
 
     }
@@ -95,8 +98,26 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
         if (this.lastTimeHitted > this.hitCooldown) {
             this.lastTimeHitted = 0;
-            this.setTint(0xF59527);
-            if (this.scene.lives === 3) {
+            this.hitSound.setRate(Phaser.Math.FloatBetween(.8, 1.2))
+            this.hitSound.play()
+
+            this.scene.tweens.add({
+                targets: this,
+                alpha: 0,            // se va a hacer invisible
+                ease: 'Linear',
+                duration: 100,       // tiempo de cada 
+                repeat: 19,          // 20 iteraciones 2 segundos si duration=100
+                yoyo: true,          // vuelve a visible despus de cada parpadeo
+                onComplete: () => { this.setAlpha(1) }
+            });
+            if (this.scene.lives === 5) {
+                this.scene.lives = this.scene.lives - 1;
+                this.scene.corazon5.destroy();
+
+            } else if (this.scene.lives === 4) {
+                this.scene.lives = this.scene.lives - 1;
+                this.scene.corazon4.destroy();
+            } else if (this.scene.lives === 3) {
                 this.scene.lives = this.scene.lives - 1;
                 this.scene.corazon3.destroy();
             } else if (this.scene.lives === 2) {
@@ -105,7 +126,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             } else if (this.scene.lives === 1) {
                 this.scene.lives = this.scene.lives - 1;
                 this.scene.corazon1.destroy();
-                console.log("%cPerdiste", "color: red")
+                this.scene.cameras.main.fadeOut(1000, 0, 0, 0);
+                this.deathSound.play()
+
+                this.scene.cameras.main.once('camerafadeoutcomplete', () => {
+                    this.scene.scene.start("GameOver")
+                });
             }
         }
     }
@@ -113,6 +139,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     fishing() {
         if (this.cursors.space.isDown && !this.isFishing) {
             this.isFishing = true;
+            this.fishSound.setRate(Phaser.Math.FloatBetween(.8, 1.2))
+            this.fishSound.play()
             console.log("ESPACIO")
             this.fish.activate(this.body.x, this.body.y);
         }

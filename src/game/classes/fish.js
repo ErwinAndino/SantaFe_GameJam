@@ -4,6 +4,7 @@ export class Fish extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, key, player) {
         super(scene, x, y, key)
         this.player = player;
+        this.scene = scene;
 
         this.isActive = false;
         this.setScale(.05)
@@ -14,6 +15,8 @@ export class Fish extends Phaser.Physics.Arcade.Sprite {
 
         this.body.setCollideWorldBounds(false);
         this.body.setAllowGravity(false);
+
+        this.pointSound = this.scene.sound.add("point", { volume: 0.5 });
     }
 
     update() {
@@ -89,8 +92,31 @@ export class Fish extends Phaser.Physics.Arcade.Sprite {
     }
 
     reelOut() {
-        this.trash.paused = false;
-        this.trash.deactivate()
+        this.pointSound.setRate(Phaser.Math.FloatBetween(.8, 1.2))
+        this.pointSound.play()
+
+
+        this.scene.tweens.add({
+            targets: this.trash,
+            y: this.trash.y - 30,
+            duration: 200,
+            ease: "Sine.out",
+            yoyo: true,
+            repeat: 1,
+            onComplete: () => {
+
+                this.scene.tweens.add({
+                    targets: this.trash,
+                    alpha: 0,
+                    duration: 400,
+                    ease: "Linear",
+                    onComplete: () => {
+                        this.trash.paused = false;
+                        this.trash.deactivate()
+                    }
+                })
+            }
+        })
         this.player.actualTrash.destroy();
         this.player.actualTrash = null;
         this.player.isActuallyFishing = false;

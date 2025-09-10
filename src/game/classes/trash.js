@@ -16,6 +16,7 @@ export class Trash extends Phaser.Physics.Arcade.Sprite {
         console.log(`%cse CREO trasg id: ${this._trashId}`, "color: aqua")
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.setAlpha(0.8);
 
         this.scene = scene;
         this.body.setAllowGravity(false);
@@ -28,6 +29,7 @@ export class Trash extends Phaser.Physics.Arcade.Sprite {
     activate(num, skin) {
         console.log(`%cACTIVANDO trash id ${this._trashId}`, "color: orange")
         this.setTexture(skin);
+        this.setAlpha(.8)
         this.key = skin;
         this.body.setSize(this.width, this.height);
         this.body.setOffset(0, 0);

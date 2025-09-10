@@ -10,6 +10,9 @@ export class CarSpawner {
             runChildUpdate: true,
             maxSize: 30
         });
+
+        this.horn1Sound = this.scene.sound.add("horn1", { volume: 0.5 });
+        this.carAmbience = this.scene.sound.add("carAmbience", { volume: 0.2 }).play();
     }
     spawn() {
         const numero = Math.random() > .5 ? 1 : 0;
@@ -23,6 +26,8 @@ export class CarSpawner {
             console.log("car no existe negro no se que hiciste mal")
         }
         if (car) {
+            this.horn1Sound.setRate(Phaser.Math.FloatBetween(.8, 1.2))
+            this.horn1Sound.play()
             console.log("intentando activar!");
             car.activate(numero === 0 ? -20 : 1980, skin);
             car.place(numero);
@@ -34,7 +39,9 @@ export class CarSpawner {
 
     update(dt) {
         this.timer += dt;
-        if (this.timer >= 5000) {
+        this.scoreModifier = this.scene.registry.get("score");
+        this.limit = Math.max(1000, 8000 - (this.scoreModifier * 500))
+        if (this.timer >= this.limit) {
             this.timer = 0;
             this.spawn()
         }

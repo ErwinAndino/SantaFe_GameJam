@@ -14,6 +14,7 @@ export class MainMenu extends Scene {
     }
 
     create() {
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
         this.add.image(960, 540, 'background');
         this.add.image(960, 540, 'puenteAtras').setAlpha(0.8);
         this.add.image(1500, 250, "beer").setDepth(0.3).setAlpha(0.5);
@@ -22,7 +23,9 @@ export class MainMenu extends Scene {
         this.corazon1 = this.add.image(50, 40, "corazon").setScale(2).setDepth(100)
         this.corazon2 = this.add.image(110, 40, "corazon").setScale(2).setDepth(100)
         this.corazon3 = this.add.image(170, 40, "corazon").setScale(2).setDepth(100)
-        this.lives = 3;
+        this.corazon4 = this.add.image(230, 40, "corazon").setScale(2).setDepth(100)
+        this.corazon5 = this.add.image(290, 40, "corazon").setScale(2).setDepth(100)
+        this.lives = 5;
 
         let g = this.add.graphics();
         g.fillStyle(0xffffff, 1);
@@ -56,6 +59,7 @@ export class MainMenu extends Scene {
         }).setOrigin(0.5).setDepth(70);
 
         this.score = 0;
+        this.registry.set("score", this.score);
 
         this.scoreText = this.add.text(1800, 50, `Puntos: ${this.score}`, {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
@@ -81,6 +85,7 @@ export class MainMenu extends Scene {
 
         this.actualTrash = null;
         this.overlappingBar = false
+        this.cursors = this.input.keyboard.createCursorKeys();
 
     }
 
@@ -124,6 +129,7 @@ export class MainMenu extends Scene {
                 this.fishBar.actualTrashTexture = null;
 
                 this.score += 1;
+                this.registry.set("score", this.score);
                 this.scoreText.setText(`Puntos: ${this.score}`);
             }
         } else {
@@ -142,7 +148,7 @@ export class MainMenu extends Scene {
 
     moveInnerBar() {
         if (this.fishBarInner.fishMiniGame) {
-            this.cursors = this.input.keyboard.createCursorKeys();
+
 
             this.dir = 0;
             this.cursors.space.isDown ? this.dir = 1 : this.dir = -1;

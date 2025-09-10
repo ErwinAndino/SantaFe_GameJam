@@ -1,9 +1,11 @@
 import { Boot } from './scenes/Boot';
 import { Game as MainGame } from './scenes/Game';
 import { GameOver } from './scenes/GameOver';
+import { Menu } from "./scenes/MenuDeVerdadXD"
 import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
 import { AUTO, Game } from 'phaser';
+import { MusicManager } from './scenes/Musica';
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -21,7 +23,7 @@ const config = {
         default: "arcade",
         arcade: {
             gravity: { y: 300 },
-            debug: true
+            debug: false
         }
     },
     render: {
@@ -32,6 +34,8 @@ const config = {
     scene: [
         Boot,
         Preloader,
+        MusicManager,
+        Menu,
         MainMenu,
         MainGame,
         GameOver
