@@ -114,7 +114,7 @@ export class MainMenu extends Scene {
         if (this.overlappingBar) {
             if (this.fishingBarProgress.getBounds().right < 1300) {
                 this.fishingBarProgress.setVisible(true);
-                this.fishingBarProgress.scaleX += 0.02;
+                this.fishingBarProgress.scaleX += 0.04;
             } else if (this.fishingBarProgress.getBounds().right >= 1300) {
                 //LOGICA DE CONSEGUIR PUNTOS
                 this.player.fish.reelOut(this.player.actualTrash);

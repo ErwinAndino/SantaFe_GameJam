@@ -2,7 +2,7 @@ export class FishBarInner extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, key) {
         super(scene, x, y, key)
 
-        this.speed = 4
+        this.speed = 6
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.body.setAllowGravity(false);

@@ -81,7 +81,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.setVelocityX(vx);
     }
     jumping() {
-        if ((this.cursors.up.isDown) && (this.body.blocked.down)) this.body.setVelocityY(-550);
+        if ((this.cursors.up.isDown) && (this.body.blocked.down)) this.body.setVelocityY(-450);
         this.body.setVelocityY(this.body.velocity.y += 2)
         if ((this.cursors.down.isDown) && (!this.body.blocked.down)) this.body.setVelocityY(this.body.velocity.y += 10);
 
